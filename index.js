@@ -15,7 +15,6 @@ const locators = {
 function findBushtree(q) {
      return driver.findElement(locators.searchBox)
         .sendKeys(q).then( () => driver.findElement(locators.searchForm).submit() );
-    ;
 };
 
 

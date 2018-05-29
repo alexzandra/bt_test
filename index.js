@@ -1,5 +1,5 @@
 const chromedriver = require("chromedriver");
-const selenium = require("selenium-webdriver")
+const selenium = require("selenium-webdriver");
 const driver = new selenium.Builder().forBrowser("chrome").build();
 
 
@@ -7,8 +7,8 @@ const By = selenium.By;
 const until = selenium.until;
 
 const locators = {
-    searchForm: By.css("form"),
-    searchBox: By.css("#sb_ifc0 input[name='q']"),
+    searchForm: By.css('form'),
+    searchBox: By.css('#lst-ib'),
     KRS: By.partialLinkText('krs')
 };
 

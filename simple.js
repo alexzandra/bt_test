@@ -9,7 +9,7 @@ const until = selenium.until;
 const locators = {
     searchForm: By.css("form"),
     searchBox: By.css("#sb_ifc0 input[name='q']"),
-    KRS: By.partialLinkText('KRS')
+    KRS: By.partialLinkText('krs')
 };
 
 function findBushtree(q) {
@@ -18,4 +18,4 @@ function findBushtree(q) {
     driver.findElement(locators.searchForm).submit();
 };
 
-findBushtree("bushtree");
+findBushtree("bushtree\n");

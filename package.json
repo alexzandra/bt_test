@@ -1,0 +1,14 @@
+{
+    "name": "bushtree-test",
+    "version": "0.0.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+        "start": "node index.js"
+    },
+    "dependencies": {
+        "assert": "^1.4.1",
+        "chromedriver": "^2.38.3",
+        "selenium-webdriver": "^4.0.0-alpha.1"
+    }
+}

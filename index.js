@@ -3,7 +3,7 @@ const selenium = require("selenium-webdriver");
 const fs = require("fs");
 
 const driver = new selenium.Builder().forBrowser("chrome").build();
-const assert = require('assert').strict;
+const assert = require("assert");
 
 const By = selenium.By;
 const until = selenium.until;
@@ -13,9 +13,9 @@ const locators = {
     searchBox: By.css('#lst-ib'),
     KRS: By.partialLinkText('KRS'),
     bushtreeKRS: By.partialLinkText('0000721490'),
-    NIP: By.partialLinkText('5542961359'),
+    nip: By.partialLinkText('5542961359'),
     KRStable: By.xpath('//*[@id="main"]/div[4]/table[1]/tbody/tr[4]/td[2]'),
-    NIPtable: By.xpath('//*[@id="main"]/div[4]/table[1]/tbody/tr[4]/td[2]')
+    niptable: By.xpath('//*[@id="main"]/div[4]/table[1]/tbody/tr[3]/td[2]')
 };
 
 function findBushtree(q) {
@@ -28,6 +28,7 @@ function openKRS() {
         driver.findElement(locators.KRS).click());
 };
 
+
 function KRSscreenshot() {
     return driver.wait(until.elementLocated(locators.bushtreeKRS), 10000).then( () =>
     driver.takeScreenshot().then((image, err) => {
@@ -39,24 +40,22 @@ function KRSscreenshot() {
 };
 
 function KRSassert() {
-    assert.strictEqual('0000721490', KRStable, "assertion KRS passed successfully")};
+    return driver.findElement(locators.KRStable).getText().then(txt =>
+    assert.equal('0000721490', txt, "Zly KRS")
+    );
+};
 
-function printNIP() {
-    return driver.wait(until.elementLocated(locators.NIP), 10000).then( () =>
-    driver.findElement(locators.NIPtable).getText().then(txt => console.log("BUSHTREE NIP:", txt, "\n******************************"))
-)};
-
-
-function validateNIP() {
-    var NIP = driver.findElement(locators.NIPtable).getText();
-   
-    if (NIP == null)
+function validatenip() {
+    return driver.findElement(locators.niptable).getText()
+    .then(nip => {
+    
+    if (nip == null)
         return false;
   
-    if (NIP.length != 10)
+    if (nip.length != 10)
         return false;
           
-    for (i=0; i<10; i++)
+    for (i=0; i<10; i++) {
         if (isNaN(nip[i]))
             return false;
 
@@ -75,7 +74,21 @@ function validateNIP() {
             return false;
              
             return true;
-    };
+    }
+    }).then(isnip => {
+        if(isnip)
+        console.log("NIP validated");
+        else
+        console.error("NIP not validated");
+
+        assert.equal(isnip,true,"Wrong NIP");
+    });
+}
+
+function printnip() {
+    return driver.wait(until.elementLocated(locators.nip), 10000).then( () =>
+    driver.findElement(locators.niptable).getText().then(txt => console.log("BUSHTREE nip:", txt, "\n******************************"))
+)};
 
 function KRS() {
     driver.get("http://google.com/").then( () => 
@@ -83,11 +96,12 @@ function KRS() {
         findBushtree("bushtree")).then( () => 
         openKRS().then( () =>
         KRSscreenshot().then( () =>
-      //  KRSassert().then( () =>
-        validateNIP().then( () =>    
-        printNIP()
-         )))))
-       // )
+        KRSassert().then( () =>
+        validatenip().then( () =>    
+        printnip()
+         ))))
+        )
+        )
 };
 
 KRS();
